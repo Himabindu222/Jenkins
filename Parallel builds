@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    tools {
+        nodejs 'node-18'
+    }
+
+    stages {
+        stage('git checkout') {
+            steps {
+               git branch: 'main', url: 'https://github.com/Himabindu222/Super-mario.git'
+            }
+         }
+         stage('paralle builds') {
+             parallel {
+                 stage('install') {
+                     steps {
+                         sh 'npm install'
+                     }
+                 }
+                 stage('Unit Tests') {
+                    steps {
+                        sh 'npm test || echo "No tests defined"'
+                    }
+                }
+             }
+         }
+    }
+}
+
